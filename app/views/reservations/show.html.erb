@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Time slots:</strong>
+  <%= @reservation.time_slots %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @reservation.user %>
+</p>
+
+<p>
+  <strong>Charter type:</strong>
+  <%= @reservation.charter_type %>
+</p>
+
+<p>
+  <strong>Guests:</strong>
+  <%= @reservation.guests %>
+</p>
+
+<p>
+  <strong>Comments:</strong>
+  <%= @reservation.comments %>
+</p>
+
+<%= link_to 'Edit', edit_reservation_path(@reservation) %> |
+<%= link_to 'Back', reservations_path %>
