@@ -10,6 +10,10 @@
   <%= @time_slot.end_time %>
 </p>
 
+<p>
+  <strong>Capacity:</strong>
+  <%= @time_slot.capacity %>
+</p>
 
 <% if user_signed_in? && current_user.admin? %>
 	<%= link_to 'Edit', edit_time_slot_path(@time_slot) %> |

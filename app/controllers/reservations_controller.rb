@@ -29,10 +29,15 @@ class ReservationsController < ApplicationController
   def create
     @reservation = @time_slot.reservations.new(reservation_params)
     @reservation.user_id = current_user.id
-    if @reservation.save
-      redirect_to time_slot_reservation_path(@time_slot, @reservation), notice: 'Reservation was successfully created.'
+
+    if theres_capacity
+      if @reservation.save
+        redirect_to time_slot_reservation_path(@time_slot, @reservation), notice: 'Reservation was successfully created.'
+      else
+        render 'new'
+      end
     else
-      render 'new'
+      redirect_to root_path, notice: "Sorry, that charter cannot accommodate your group size (#{@reservation.guests})"
     end
   end
 
@@ -50,10 +55,7 @@ class ReservationsController < ApplicationController
   # DELETE /reservations/1.json
   def destroy
     @reservation.destroy
-    respond_to do |format|
-      format.html { redirect_to reservations_url, notice: 'Reservation was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to time_slot_reservations_path(@time_slot), notice: 'Reservation was successfully destroyed.'
   end
 
   private
@@ -70,4 +72,15 @@ class ReservationsController < ApplicationController
     def load_time_slot
       @time_slot = TimeSlot.find(params[:time_slot_id])
     end
+
+    def theres_capacity
+      array = []
+      @time_slot.reservations.each do |reservation|
+        array << reservation.guests
+      end
+      if array.sum < @time_slot.capacity
+        return true
+      end
+    end
+
 end

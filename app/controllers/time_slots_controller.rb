@@ -71,7 +71,7 @@ class TimeSlotsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def time_slot_params
-      params.require(:time_slot).permit(:start_time, :end_time)
+      params.require(:time_slot).permit(:start_time, :end_time, :capacity)
     end
 
     def is_admin?
