@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Charter Type:</strong>
+  <%= @time_slot.chartertype %>
+</p>
+
+<p>
   <strong>Start time:</strong>
   <%= @time_slot.start_time %>
 </p>
@@ -13,6 +18,16 @@
 <p>
   <strong>Capacity:</strong>
   <%= @time_slot.capacity %>
+</p>
+
+<p>
+	<strong>Comments:</strong>
+	<%= @time_slot.comments %>
+</p>
+
+<p>
+	<strong>Closed:</strong>
+	<%= @time_slot.closed %>
 </p>
 
 <% if user_signed_in? && current_user.admin? %>

@@ -5,10 +5,13 @@
 <table>
   <thead>
     <tr>
+      <th>Charter Type</th>
       <th>Start time</th>
       <th>End time</th>
-      <th>Reservation Count</th>
-      <th>Capacity</th>
+      <% if user_signed_in? && current_user.admin? %>
+        <th>Reservation Count</th>
+        <th>Capacity</th>
+      <% end %>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,10 +20,13 @@
     <% if @time_slots.length > 0 %>
       <% @time_slots.each do |time_slot| %>
         <tr>
+          <td><%= time_slot.chartertype %></td>
           <td><%= time_slot.start_time %></td>
           <td><%= time_slot.end_time %></td>
-          <td><%= time_slot.reservations.length %></td>
-          <td><%= time_slot.capacity %></td>
+          <% if user_signed_in? && current_user.admin? %>
+            <td><%= time_slot.reservations.length %></td>
+            <td><%= time_slot.capacity %></td>
+          <% end %>
           <% if user_signed_in? && current_user.admin? %>
               <td><%= link_to 'Edit', edit_time_slot_path(time_slot) %></td>
               <td><%= link_to 'Destroy', time_slot, method: :delete, data: { confirm: 'Are you sure?' } %></td>

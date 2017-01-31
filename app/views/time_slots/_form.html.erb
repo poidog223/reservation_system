@@ -12,6 +12,11 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :chartertype, 'Charter Type' %>
+    <%= f.select(:chartertype, [['Full Day', 'Full Day'],['Half Day','Half Day'],['1/4 Day', '1/4 Day']], {}) %>
+  </div>
+
+  <div class="field">
     <%= f.label :start_time %>
     <%= f.datetime_select :start_time %>
   </div>
@@ -24,6 +29,16 @@
   <div class="field">
     <%= f.label :capacity %>
     <%= f.number_field :capacity %>
+  </div>
+
+  <div class="field">
+    <%= f.label :comments %>
+    <%= f.text_field :comments %>
+  </div>
+
+  <div class="field">
+    <%= f.label :closed %>
+    <%= f.check_box :closed %>
   </div>
 
   <div class="actions">

@@ -1,7 +1,8 @@
 class ReservationsController < ApplicationController
   before_action :load_time_slot
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:edit, :update]
+  before_action :check_admin, only: [:index]
   
 
   # GET /reservations
@@ -30,14 +31,14 @@ class ReservationsController < ApplicationController
     @reservation = @time_slot.reservations.new(reservation_params)
     @reservation.user_id = current_user.id
 
-    if theres_capacity
+    if theres_capacity && !@time_slot.closed
       if @reservation.save
         redirect_to time_slot_reservation_path(@time_slot, @reservation), notice: 'Reservation was successfully created.'
       else
         render 'new'
       end
     else
-      redirect_to root_path, notice: "Sorry, that charter cannot accommodate your group size (#{@reservation.guests})"
+      redirect_to root_path, notice: "Sorry, that charter is closed. Please select another time."
     end
   end
 
@@ -59,12 +60,10 @@ class ReservationsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_reservation
       @reservation = @time_slot.reservations.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
       params.require(:reservation).permit(:time_slot_id, :date, :user_id, :charter_type, :guests, :comments)
     end
@@ -80,6 +79,12 @@ class ReservationsController < ApplicationController
       end
       if array.sum < @time_slot.capacity
         return true
+      end
+    end
+
+    def check_admin
+      unless user_signed_in? && current_user.admin?
+        redirect_to root_path, notice: "You don't have the required authorization"
       end
     end
 
