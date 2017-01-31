@@ -15,6 +15,7 @@ class ReservationsController < ApplicationController
   # GET /reservations/new
   def new
     @reservation = Reservation.new
+    @time_slots = TimeSlot.all
   end
 
   # GET /reservations/1/edit
