@@ -2,12 +2,12 @@
 
 <p>
   <strong>Time slots:</strong>
-  <%= @reservation.time_slots %>
+  <%= @reservation.time_slot.start_time %>
 </p>
 
 <p>
-  <strong>User:</strong>
-  <%= @reservation.user %>
+  <strong>User ID:</strong>
+  <%= @reservation.user.id %>
 </p>
 
 <p>
@@ -25,5 +25,5 @@
   <%= @reservation.comments %>
 </p>
 
-<%= link_to 'Edit', edit_reservation_path(@reservation) %> |
-<%= link_to 'Back', reservations_path %>
+<%= link_to 'Edit', edit_time_slot_reservation_path(@time_slot, @reservation) %> |
+<%= link_to 'Back', time_slot_reservations_path %>

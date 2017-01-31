@@ -24,7 +24,7 @@ class TimeSlotsController < ApplicationController
   # POST /time_slots
   # POST /time_slots.json
   def create
-    @time_slot = TimeSlot.new(time_slot_params)
+    @time_slot = TimeSlot.create(time_slot_params)
 
     respond_to do |format|
       if @time_slot.save

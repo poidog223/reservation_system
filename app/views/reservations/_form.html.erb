@@ -1,25 +1,16 @@
-<%= form_for(reservation) do |f| %>
-  <% if reservation.errors.any? %>
+<%= form_for([@time_slot, @reservation]) do |f| %>
+  <% if @reservation.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+      <h2><%= pluralize(@reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
 
       <ul>
-      <% reservation.errors.full_messages.each do |message| %>
+      <% @reservation.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :time_slots_id %>
-    <%= f.text_field :time_slots_id %>
-  </div>
-
-  <div class="field">
-    <%= f.label :date %>
-    <%= f.date_select :date %>
-  </div>
 
   <div class="field">
     <%= f.label :charter_type %>

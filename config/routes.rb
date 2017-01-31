@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   root 'time_slots#index'
 
-  resources :reservations
-
   resources :time_slots do
   	resources :reservations
   end

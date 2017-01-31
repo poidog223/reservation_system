@@ -5,8 +5,8 @@
 <table>
   <thead>
     <tr>
-      <th>Time slots</th>
-      <th>User</th>
+      <th>Time slot</th>
+      <th>User ID</th>
       <th>Charter type</th>
       <th>Guests</th>
       <th>Comments</th>
@@ -17,19 +17,17 @@
   <tbody>
     <% @reservations.each do |reservation| %>
       <tr>
-        <td><%= reservation.time_slots %></td>
-        <td><%= reservation.user %></td>
+        <td><%= reservation.time_slot.start_time %></td>
+        <td><%= reservation.user.id %></td>
         <td><%= reservation.charter_type %></td>
         <td><%= reservation.guests %></td>
         <td><%= reservation.comments %></td>
-        <td><%= link_to 'Show', reservation %></td>
-        <td><%= link_to 'Edit', edit_reservation_path(reservation) %></td>
-        <td><%= link_to 'Destroy', reservation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', time_slot_reservation_path(@time_slot, reservation) %></td>
+        <td><%= link_to 'Edit', edit_time_slot_reservation_path(@time_slot, reservation) %></td>
+        <td><%= link_to 'Destroy', [@time_slot, reservation] , method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Reservation', new_reservation_path %>

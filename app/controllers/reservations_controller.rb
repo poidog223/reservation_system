@@ -1,11 +1,13 @@
 class ReservationsController < ApplicationController
+  before_action :load_time_slot
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  
 
   # GET /reservations
   # GET /reservations.json
   def index
-    @reservations = Reservation.all
+    @reservations = @time_slot.reservations.all
   end
 
   # GET /reservations/1
@@ -15,8 +17,7 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
-    @reservation = Reservation.new
-    @time_slots = TimeSlot.all
+    @reservation = @time_slot.reservations.new
   end
 
   # GET /reservations/1/edit
@@ -26,30 +27,22 @@ class ReservationsController < ApplicationController
   # POST /reservations
   # POST /reservations.json
   def create
-    @reservation = current_user.reservations.build(reservation_params)
-
-    respond_to do |format|
-      if @reservation.save
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully created.' }
-        format.json { render :show, status: :created, location: @reservation }
-      else
-        format.html { render :new }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
-      end
+    @reservation = @time_slot.reservations.new(reservation_params)
+    @reservation.user_id = current_user.id
+    if @reservation.save
+      redirect_to time_slot_reservation_path(@time_slot, @reservation), notice: 'Reservation was successfully created.'
+    else
+      render 'new'
     end
   end
 
   # PATCH/PUT /reservations/1
   # PATCH/PUT /reservations/1.json
   def update
-    respond_to do |format|
-      if @reservation.update(reservation_params)
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully updated.' }
-        format.json { render :show, status: :ok, location: @reservation }
-      else
-        format.html { render :edit }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
-      end
+    if @reservation.update(reservation_params)
+      redirect_to time_slot_reservation_path(@time_slot, @reservation), notice: 'Reservation was successfully updated.'
+    else
+      render :edit 
     end
   end
 
@@ -66,11 +59,15 @@ class ReservationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation
-      @reservation = Reservation.find(params[:id])
+      @reservation = @time_slot.reservations.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:time_slots_id, :user_id, :charter_type, :guests, :comments)
+      params.require(:reservation).permit(:time_slot_id, :date, :user_id, :charter_type, :guests, :comments)
+    end
+
+    def load_time_slot
+      @time_slot = TimeSlot.find(params[:time_slot_id])
     end
 end
