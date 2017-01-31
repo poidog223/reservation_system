@@ -65,7 +65,7 @@ class ReservationsController < ApplicationController
     end
 
     def reservation_params
-      params.require(:reservation).permit(:time_slot_id, :date, :user_id, :charter_type, :guests, :comments)
+      params.require(:reservation).permit(:time_slot_id, :user_id, :guests, :comments, :first_name, :last_name, :email, :phone_number)
     end
 
     def load_time_slot
