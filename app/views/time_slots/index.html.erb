@@ -18,11 +18,15 @@
         <td><%= time_slot.start_time %></td>
         <td><%= time_slot.end_time %></td>
         <td><%= time_slot.reservations.length %></td>
+        
+        <% if user_signed_in? && current_user.admin? %>
+            <td><%= link_to 'Edit', edit_time_slot_path(time_slot) %></td>
+            <td><%= link_to 'Destroy', time_slot, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to "Show Reservations", time_slot_reservations_path(time_slot) %></td>
+        <% end %>
         <td><%= link_to 'Show', time_slot %></td>
-        <td><%= link_to 'Edit', edit_time_slot_path(time_slot) %></td>
-        <td><%= link_to 'Destroy', time_slot, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td><%= link_to "Book Reservation", new_time_slot_reservation_path(time_slot) %></td>
-        <td><%= link_to "Show Reservations", time_slot_reservations_path(time_slot) %></td>
+        
       </tr>
     <% end %>
   </tbody>
