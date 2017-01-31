@@ -1,5 +1,7 @@
 class TimeSlotsController < ApplicationController
   before_action :set_time_slot, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:show, :index]
+  before_action :is_admin?, except: [:show, :index]
 
   # GET /time_slots
   # GET /time_slots.json
@@ -70,5 +72,9 @@ class TimeSlotsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def time_slot_params
       params.require(:time_slot).permit(:start_time, :end_time)
+    end
+
+    def is_admin?
+      redirect_to root_path unless current_user && current_user.admin?
     end
 end
