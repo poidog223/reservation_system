@@ -7,7 +7,6 @@
     <tr>
       <th>Charter Time</th>
       <th>User ID</th>
-      <th>Charter type</th>
       <th>Guests</th>
       <th>Capacity</th>
       <th>Comments</th>
@@ -21,7 +20,6 @@
           <tr>
           <td><%= reservation.time_slot.start_time %></td>
           <td><%= reservation.user.id %></td>
-          <td><%= reservation.charter_type %></td>
           <td><%= reservation.guests %></td>
           <td><%= @time_slot.capacity %></td>
           <td><%= reservation.comments %></td>

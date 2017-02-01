@@ -29,7 +29,9 @@ class ReservationsController < ApplicationController
   # POST /reservations.json
   def create
     @reservation = @time_slot.reservations.new(reservation_params)
-    @reservation.user_id = current_user.id
+    if user_signed_in? 
+      @reservation.user_id = current_user.id
+    end
 
     if theres_capacity && !@time_slot.closed
       if @reservation.save
@@ -38,7 +40,7 @@ class ReservationsController < ApplicationController
         render 'new'
       end
     else
-      redirect_to root_path, notice: "Sorry, that charter is closed. Please select another time."
+      redirect_to root_path, notice: "Sorry, that charter is full. Please select another time."
     end
   end
 
@@ -75,9 +77,11 @@ class ReservationsController < ApplicationController
     def theres_capacity
       array = []
       @time_slot.reservations.each do |reservation|
-        array << reservation.guests
+        if !reservation.guests.blank?
+          array << reservation.guests
+        end
       end
-      if array.sum < @time_slot.capacity
+      if array.sum <= @time_slot.capacity
         return true
       end
     end

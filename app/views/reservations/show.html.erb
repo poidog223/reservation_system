@@ -1,5 +1,9 @@
 <p id="notice"><%= notice %></p>
 
+<p>Thanks <%= @reservation.first_name %>! Your reservation is confirmed for <%= @reservation.time_slot.start_time %>.</p>
+
+<p>If you need to change your order, please email us at.. </p>
+
 <p>
   <strong>Time slots:</strong>
   <%= @reservation.time_slot.start_time %>
@@ -11,8 +15,13 @@
 </p>
 
 <p>
-  <strong>Charter type:</strong>
-  <%= @reservation.charter_type %>
+  <strong>Email:</strong>
+  <%= @reservation.email %>
+</p>
+
+<p>
+  <strong>Phone Number:</strong>
+  <%= @reservation.phone_number %>
 </p>
 
 <p>
