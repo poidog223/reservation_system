@@ -5,6 +5,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'normalize-rails'
+gem 'font-awesome-sass'
+gem 'haml'
+gem 'bootstrap-sass'
 #stripe
 gem 'stripe-rails'
 #devise

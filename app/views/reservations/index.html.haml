@@ -1,0 +1,22 @@
+%h1 Reservations
+
+.table-responsive
+  %table.table.table-striped.table-bordered
+    %thead
+      %tr
+        %th Charter Time
+        %th Reservation ID
+        %th Guests
+        %th Capacity
+        %th Comments
+        %th{colspan:3}
+    %tbody
+      - @reservations.each do |reservation|
+        %tr
+          %td= link_to reservation.time_slot.start_time, time_slot_reservation_path(@time_slot, reservation)  
+          %td= reservation.id
+          %td= reservation.guests
+          %td= @time_slot.capacity
+          %td= reservation.comments
+          %td= link_to 'Edit', edit_time_slot_reservation_path(@time_slot, reservation)
+          %td= link_to 'Destroy', [@time_slot, reservation], method: :delete, data: { confirm: "Are you sure?" }

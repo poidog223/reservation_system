@@ -1,0 +1,56 @@
+%h1 Book Online
+
+- start_date = params.fetch(:start_date, Date.today).to_date
+- date_range = (start_date.beginning_of_month.beginning_of_week..start_date.end_of_month.end_of_week).to_a
+
+
+= link_to "&#171;".html_safe, start_date: date_range.first - 1.day
+= start_date.strftime("%B") + " " + start_date.strftime("%Y")
+= link_to "&#187;".html_safe, start_date: date_range.last + 1.day
+
+.table-responsive
+  %table.table.table-striped.table-bordered
+    %thead
+      %tr
+        - date_range.slice(0,7).each do |day|
+          %th.center= day.strftime("%A")
+    %tbody
+      - date_range.each_slice(7) do |week|
+        %tr
+          - week.each do |day|
+            %td= day 
+
+
+
+.table-responsive
+  %table.table.table-striped.table-bordered
+    %thead
+      %tr
+        %th Charter Type
+        %th Start Time
+        %th End Time
+        %th Price
+        - if user_signed_in? && current_user.admin?
+          %th Reservation Count
+          %th Capacity
+          %th{colspan:5}
+    %tbody
+      - if @time_slots.length > 0
+        - @time_slots.each do |time_slot|
+          %tr
+            %td= time_slot.chartertype
+            %td= time_slot.start_time.strftime('%v')
+            %td= time_slot.end_time
+            %td= "$#{time_slot.price}"
+            - if user_signed_in? && current_user.admin?
+              %td= time_slot.reservations.count
+              %td= time_slot.capacity
+              %td= link_to 'Edit', edit_time_slot_path(time_slot)
+              %td= link_to 'Destroy', time_slot, method: :delete, data: { confirm: 'Are you sure?' }
+              %td= link_to "Reservations", time_slot_reservations_path(time_slot)
+              %td= link_to 'Details', time_slot
+              %td= link_to "Book Reservation", new_time_slot_reservation_path(time_slot)
+      - else
+        There are no available charter times
+- if user_signed_in? && current_user.admin?
+  %p= link_to "New Charter Time", new_time_slot_path

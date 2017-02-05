@@ -1,0 +1,75 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require normalize-rails
+ *= require_tree .
+ *= require_self
+ */
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+body {
+	font-family: 'Lato', sans-serif;
+	background: #EDEFF0;
+}
+
+.center {
+	text-align:center;
+}
+
+.wrapper {
+	width: 80%;
+	margin: 0 auto;
+	max-width: 1200px;
+}
+
+.clearfix:before, .clearfix:after {
+	content: " ";
+	display: table;
+}
+
+.clearfix:after{
+	clear:both;
+}
+
+.main_header {
+	width: 100%;
+	margin: 0 auto;	
+	background: white;
+
+	#logo {
+		float: left;
+		p {
+			text-transform: uppercase;
+			font-weight: 700;
+			letter-spacing: -1px;
+			font-size: 2rem;
+			margin-top: 15px;
+		}
+	}
+	#buttons {
+		float:right;
+
+		a {
+			line-height: 60px;
+			background: #397CAC;
+			padding: .5em 1em;
+			border-radius: 0.2em;
+			color:white;
+			text-decoration: none;
+			font-weight: 100;
+		}
+	}
+}

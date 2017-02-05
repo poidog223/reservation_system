@@ -3,10 +3,15 @@ class TimeSlotsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :index]
   before_action :is_admin?, except: [:show, :index]
 
-  # GET /time_slots
-  # GET /time_slots.json
+  # create filter for specific date ranges
   def index
-    @time_slots = TimeSlot.all
+    if params[:date_range].blank?
+      @time_slots = TimeSlot.all
+    else
+      input_start_time =
+      input_end_time = 
+      @time_slots = TimeSlot.where("start_time > ? AND end_time < ?", input_start_time, input_end_time)
+    end
   end
 
   # GET /time_slots/1
@@ -71,7 +76,7 @@ class TimeSlotsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def time_slot_params
-      params.require(:time_slot).permit(:start_time, :end_time, :capacity, :closed, :chartertype, :comments)
+      params.require(:time_slot).permit(:start_time, :end_time, :capacity, :closed, :chartertype, :comments, :price)
     end
 
     def is_admin?

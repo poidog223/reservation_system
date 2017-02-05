@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170131065103) do
+ActiveRecord::Schema.define(version: 20170201061531) do
 
   create_table "reservations", force: :cascade do |t|
     t.integer  "time_slot_id"
@@ -22,7 +22,8 @@ ActiveRecord::Schema.define(version: 20170131065103) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
-    t.integer  "phone_number"
+    t.string   "phone_number"
+    t.string   "card_token"
     t.index ["time_slot_id"], name: "index_reservations_on_time_slot_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
@@ -36,6 +37,7 @@ ActiveRecord::Schema.define(version: 20170131065103) do
     t.boolean  "closed",      default: false
     t.string   "chartertype"
     t.text     "comments"
+    t.integer  "price"
   end
 
   create_table "users", force: :cascade do |t|

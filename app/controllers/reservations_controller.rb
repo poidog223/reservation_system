@@ -3,6 +3,8 @@ class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:edit, :update]
   before_action :check_admin, only: [:index]
+  before_action :set_description
+  before_action :set_plan
   
 
   # GET /reservations
@@ -29,19 +31,32 @@ class ReservationsController < ApplicationController
   # POST /reservations.json
   def create
     @reservation = @time_slot.reservations.new(reservation_params)
-    if user_signed_in? 
-      @reservation.user_id = current_user.id
-    end
 
-    if theres_capacity && !@time_slot.closed
-      if @reservation.save
+    token = params[:stripeToken]
+
+    begin
+      charge = Stripe::Charge.create(
+        :amount => @time_slot.price,
+        :currency => "usd",
+        :description => @time_slot.chartertype,
+        :source => token,
+      )
+
+      if theres_capacity && !@time_slot.closed
+        @reservation.save
         redirect_to time_slot_reservation_path(@time_slot, @reservation), notice: 'Reservation was successfully created.'
       else
-        render 'new'
+        redirect_to root_path, notice: "Sorry, an error occurrred."
       end
-    else
-      redirect_to root_path, notice: "Sorry, that charter is full. Please select another time."
+
+    rescue Stripe::CardError => e
+      flash[:notice] = 'That card is on fire!'
+      render 'new'
+    rescue => e
+      flash[:notice] = 'Some error occurred.'
+      render 'new'
     end
+
   end
 
   # PATCH/PUT /reservations/1
@@ -90,6 +105,18 @@ class ReservationsController < ApplicationController
       unless user_signed_in? && current_user.admin?
         redirect_to root_path, notice: "You don't have the required authorization"
       end
+    end
+
+    def stripe_params
+      params.permit(:stripeEmail, :stripeToken)
+    end
+
+    def set_description
+      @description = "Basic Membership"
+    end
+
+    def set_plan
+      @plan = 9999
     end
 
 end

@@ -1,4 +1,7 @@
 <%= form_for([@time_slot, @reservation]) do |f| %>
+  <!-- stripe errors -->
+  <span class="reservation-errors"></span>
+
   <% if @reservation.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
@@ -41,7 +44,33 @@
     <%= f.text_area :comments %>
   </div>
 
+  <!-- stripe -->
+
+  <div class="field">
+    <%= label_tag "Card Number", nil, required: true %>
+    <div class="control-group">
+      <div class="controls">
+        <%= text_field_tag :card_number, nil, class: '', "data-stripe" => "number" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= label_tag "Card Verification", nil, required: true %>
+    <div class="control-group">
+      <div class="controls">
+        <%= text_field_tag :card_verification, nil, class: '', "data-stripe" => "cvv" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= label_tag "Card Expires", nil, required: true %>
+    <%= select_tag :exp_month, options_for_select(Date::MONTHNAMES.compact.each_with_index.map { |name,i| ["#{i+1} - #{name}", i+1] }), include_blank: false, "data-stripe" => "exp-month", class: "span2" %>
+    <%= select_tag :exp_year, options_for_select((Date.today.year..(Date.today.year+10)).to_a), include_blank: false, "data-stripe" => "exp-year", class: "span1" %>
+  </div>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Submit Payment", class: "submit" %>
   </div>
 <% end %>

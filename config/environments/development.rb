@@ -54,4 +54,8 @@ Rails.application.configure do
 
   #devise
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+  config.stripe.secret_key = "sk_test_lOddSkdaOXjt3nGPhoNSH9LG"
+  config.stripe.publishable_key = 'pk_test_gBOjYO65Y4rZKHBLZrTJ47f7'
+
 end
